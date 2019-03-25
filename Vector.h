@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class Vector {
+class Vector{
 
     int size; // Size of the vector
 
@@ -29,6 +29,7 @@ public:
     Vector operator+(const Vector &) const; // Vector addition
     Vector operator*(int) const;             // Multiplication with scalar
     Vector operator*(const Vector &) const;  //
+    friend ostream& operator<<(ostream &, const Vector &);
     //    ~Vector();   No need since we don't use dynamic memory allocation.
 };
 
@@ -62,12 +63,18 @@ Vector::Vector(const Vector &in_vector) {
     values = in_vector.values;
 }
 
-const Vector &Vector::operator=(const Vector &in_vector) {
+
+
+/* OPERATORS */
+
+// Assignment Operator Overloading
+const Vector& Vector::operator=(const Vector &in_vector) {
     size = in_vector.size;
     values = in_vector.values;
     return *this;
 }
 
+// Summation Operator Overloading
 Vector Vector::operator+(const Vector &in_vector) const {
     if(size == in_vector.size){
         vector<int> summed_values;
@@ -75,19 +82,46 @@ Vector Vector::operator+(const Vector &in_vector) const {
             summed_values[i] = values[i] + in_vector.values[i];
         }
         return Vector(summed_values);
-    }else{
-        cout << "Vectors are not the same size cant sum." << endl;
-        cout << "Returning a vector filled by zero" << endl;
-        return Vector(size);
     }
+    cerr << "Vectors are not the same size. Summation cannot be done." << endl;
+    cerr << "Returning a vector filled by zero" << endl;
+    return Vector(size);
+}
+
+// Multiplication Operator Overloading for SCALAR MULTIPLICATION.
+Vector Vector::operator*(int scalar) const {
+    vector<int> scaled_results;
+    for(int i = 0; i < size; i++)
+        scaled_results[i] = values[i] * scalar;
+    
+    return Vector(scaled_results);
 }
 
 
+// Multiplication Operator Overloading for DOT PRODUCT
+Vector Vector::operator*(const Vector &in_vector) const {
+    if (size == in_vector.size){
+        int result = 0;
+        for(int i = 0; i < size; i++)
+            result += values[i] * in_vector.values[i];
+    }
+    cerr << "Vectors are not the same size. Summation cannot be done." << endl;
+    cerr << "Returning a vector filled by zero" << endl;
+    return Vector(size);
+}
 
-/* OPERATORS */
-
+ostream& operator<<(ostream &out, const Vector& in_vector) {
+    out << "(";
+    for (int i = 0; i < in_vector.size - 1; i++){
+        out << in_vector.values[i] << ", ";
+    }
+    out << in_vector.values[in_vector.size - 1] << ")";
+    return out;
+}
 
 
 /* DESTRUCTOR */
+// No dynamic memory used in this class. No need for custom destructor.
+
 
 #endif // VECTOR_H
