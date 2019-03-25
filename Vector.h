@@ -1,5 +1,7 @@
 //
 // Created by faati on 24.03.2019.
+// Name: Fatih Altınpınar
+// ID: 150180707
 //
 #ifndef VECTOR_H
 #define VECTOR_H
@@ -24,7 +26,7 @@ public:
     Vector(const Vector &); // Copy Constructor
 
     // Operator Overloading
-    const Vector &operator=(const Vector &);
+    const Vector& operator=(const Vector &);
 
     Vector operator+(const Vector &) const; // Vector addition
     Vector operator*(int) const;             // Multiplication with scalar
