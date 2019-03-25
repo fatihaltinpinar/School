@@ -48,7 +48,7 @@ const Polynomial& Polynomial::operator=(const Polynomial &in_poly) {
     coefficients = in_poly.coefficients;
 }
 
-
+// TODO add comment
 
 Polynomial Polynomial::operator+(const Polynomial &in_poly) const {
     vector<int> result;
@@ -87,9 +87,69 @@ Polynomial Polynomial::operator*(const Polynomial &in_poly) const {
     return Polynomial(result);
 }
 
-//ostream& Polynomial::operator<<(ostream &out, const Polynomial &in_poly) {
-//    if ()
-//    return out;
-//}
+ostream& operator<<(ostream &out, const Polynomial &in_poly) {
+    int first_element = in_poly.coefficients[in_poly.degree];
+
+    if (first_element == 1 && in_poly.degree > 1){
+        out << "x^" << in_poly.degree;
+    }else if(abs(first_element) > 1 && in_poly.degree > 1){
+        out << first_element << "x^" << in_poly.degree;
+    }
+
+    for (int i = in_poly.degree - 1; i > 1; i--){
+        if (in_poly.coefficients[i] == 1){
+            out << " + x^" << i;
+        }else if (in_poly.coefficients[i] == -1){
+            out << " - x^" << i;
+        }else if (in_poly.coefficients[i] > 1){
+            out << " + " << in_poly.coefficients[i] << "x^" << i;
+        }else if (in_poly.coefficients[i] < 1){
+            out << " - " << in_poly.coefficients[i] << "x^" << i;
+        }
+    }
+
+    if (in_poly.degree > 1){
+        if (in_poly.coefficients[1] == 1){
+            out << " + x";
+        }else if (in_poly.coefficients[1] == -1){
+            out << " - x";
+        }else if (in_poly.coefficients[1] > 1){
+            out << " + " << in_poly.coefficients[1] << "x";
+        }else if (in_poly.coefficients[1] < 1){
+            out << " - " << in_poly.coefficients[1] << "x";
+        }
+    }
+
+    if (in_poly.degree == 1){
+        if (in_poly.coefficients[1] == 1){
+            out << "x";
+        }else if (in_poly.coefficients[1] == -1){
+            out << "x";
+        }else if (in_poly.coefficients[1] > 1){
+            out << in_poly.coefficients[1] << "x";
+        }else if (in_poly.coefficients[1] < 1){
+            out << in_poly.coefficients[1] << "x";
+        }
+    }
+
+
+    if (in_poly.degree >= 0){
+        if (in_poly.coefficients[0] > 0)
+            out << " + " << in_poly.coefficients[0];
+        else
+            out << " - " << in_poly.coefficients[0];
+    }
+
+    if (in_poly.degree == 0){
+        if (in_poly.coefficients[0] > 0)
+            out << in_poly.coefficients[0];
+        else
+            out << in_poly.coefficients[0];
+    }
+
+    return out;
+}
+
+
 #endif //POLYNOMIAL_H
 

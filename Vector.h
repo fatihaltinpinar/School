@@ -32,7 +32,7 @@ public:
 
     Vector operator+(const Vector &) const; // Vector addition
     Vector operator*(int) const;             // Multiplication with scalar
-    Vector operator*(const Vector &) const;  //
+    int operator*(const Vector &) const;  // Dot Product
     friend ostream& operator<<(ostream &, const Vector &);
     //    ~Vector();   No need since we don't use dynamic memory allocation.
 };
@@ -83,12 +83,12 @@ Vector Vector::operator+(const Vector &in_vector) const {
     if(size == in_vector.size){
         vector<int> summed_values;
         for(int i = 0; i < size; i++){
-            summed_values[i] = values[i] + in_vector.values[i];
+            summed_values.push_back(values[i] + in_vector.values[i]);
         }
         return Vector(summed_values);
     }
-    cerr << "Vectors are not the same size. Summation cannot be done." << endl;
-    cerr << "Returning a vector filled by zero" << endl;
+    cout << "Vectors are not the same size. Summation cannot be done." << endl;
+    cout << "Returning a vector filled by zero" << endl;
     return Vector(size);
 }
 
@@ -96,24 +96,28 @@ Vector Vector::operator+(const Vector &in_vector) const {
 Vector Vector::operator*(int scalar) const {
     vector<int> scaled_results;
     for(int i = 0; i < size; i++)
-        scaled_results[i] = values[i] * scalar;
+        scaled_results.push_back(values[i] * scalar);
     
     return Vector(scaled_results);
 }
 
 
 // Multiplication Operator Overloading for DOT PRODUCT
-Vector Vector::operator*(const Vector &in_vector) const {
+int Vector::operator*(const Vector &in_vector) const {
     if (size == in_vector.size){
         int result = 0;
         for(int i = 0; i < size; i++)
             result += values[i] * in_vector.values[i];
+        return result;
+    }else{
+    cout << "Vectors are not the same size. Summation cannot be done." << endl;
+    cout << "Returning a zero" << endl;
+    return 0;
     }
-    cerr << "Vectors are not the same size. Summation cannot be done." << endl;
-    cerr << "Returning a vector filled by zero" << endl;
-    return Vector(size);
 }
 
+
+// todo add comment
 ostream& operator<<(ostream &out, const Vector& in_vector) {
     out << "(";
     for (int i = 0; i < in_vector.size - 1; i++){
