@@ -19,6 +19,8 @@ class Vector{
     vector<int> values;
 
 public:
+
+    // todo add getters
     // Constructors
     Vector(); // Default Constructor
     Vector(int); // Constructor with just size given

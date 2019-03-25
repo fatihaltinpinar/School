@@ -15,6 +15,7 @@ class Polynomial{
     int degree;
     vector<int> coefficients;
 public:
+    // todo add getters
     Polynomial();
     Polynomial(const vector<int> &);
     Polynomial(const Polynomial &);
