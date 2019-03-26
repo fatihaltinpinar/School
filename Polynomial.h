@@ -34,6 +34,7 @@ public:
     //~Polynomial();  // No need since this object is not created with dynamic memory allocation.
 };
 
+
 /* CONSTRUCTORS */
 
 //Default Constructor
@@ -67,6 +68,7 @@ vector<int> Polynomial::get_coefficients() const {
 const Polynomial& Polynomial::operator=(const Polynomial &in_poly) {
     degree = in_poly.degree;
     coefficients = in_poly.coefficients;
+    return *this;
 }
 
 // Summation operator
@@ -112,12 +114,13 @@ Polynomial Polynomial::operator*(const Polynomial &in_poly) const {
 // Overloading printing operator
 ostream& operator<<(ostream &out, const Polynomial &in_poly) {
     int first_element = in_poly.coefficients[in_poly.degree];
-
+    if (first_element < 0) // Taking absolute since I wan't it to work both ways. Negative
+        first_element *= -1;
     // Decides how first element will look like.
     if (first_element == 1 && in_poly.degree > 1){
         out << "x^" << in_poly.degree;
-    }else if(abs(first_element) > 1 && in_poly.degree > 1){
-        out << first_element << "x^" << in_poly.degree;
+    }else if(first_element > 1 && in_poly.degree > 1){
+        out << in_poly.coefficients[in_poly.degree] << "x^" << in_poly.degree;
     }
 
     // For most of the coefficients between 1 and maximum degree.

@@ -98,7 +98,6 @@ void read_polynomials(vector<Polynomial> &polynomial_list){
         cout << "Polynomial reading is completed." << endl;
     }else {
         cerr << "Can not open Polynomial.txt!" << endl;
-        exit(EXIT_FAILURE);
     }
 }
 
@@ -129,7 +128,6 @@ void read_vectors(vector<Vector> &vector_list){
         cout << "Vector reading is completed." << endl;
     }else{
         cerr << "Can not open Vector.txt!" << endl;
-        exit(EXIT_FAILURE);
     }
 
 }
