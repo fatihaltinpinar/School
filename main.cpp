@@ -163,17 +163,23 @@ void polynomial_operation(const vector<Polynomial> &polynomial_list){
     int first_op, second_op;
     char operation;
     cin >> first_op >> operation >> second_op; // cin ignores spaces which allows reading int + char + int inputs
-    switch(operation){
-        case '+': // Addition
-            cout << "(" << polynomial_list[first_op - 1] << ") + (" << polynomial_list[second_op - 1];
-            cout << ") = " << polynomial_list[first_op - 1] + polynomial_list[second_op - 1] << endl;
-            break;
-        case '*': // Multiplication
-            cout << "(" << polynomial_list[first_op - 1] << ") * (" << polynomial_list[second_op - 1];
-            cout << ") = " << polynomial_list[first_op - 1] * polynomial_list[second_op - 1] << endl;
-            break;
-        default:
-            cout << "Invalid operation!" << endl;
+
+    if (first_op > int(polynomial_list.size()) || second_op > int(polynomial_list.size()))
+        cout << "Those polynomials do not exist!" << endl;
+    else{
+
+        switch(operation){
+            case '+': // Addition
+                cout << "(" << polynomial_list[first_op - 1] << ") + (" << polynomial_list[second_op - 1];
+                cout << ") = " << polynomial_list[first_op - 1] + polynomial_list[second_op - 1] << endl;
+                break;
+            case '*': // Multiplication
+                cout << "(" << polynomial_list[first_op - 1] << ") * (" << polynomial_list[second_op - 1];
+                cout << ") = " << polynomial_list[first_op - 1] * polynomial_list[second_op - 1] << endl;
+                break;
+            default:
+                cout << "Invalid operation!" << endl;
+        }
     }
 }
 
@@ -182,22 +188,27 @@ void vector_operation(const vector<Vector> &vector_list){
     int first_op, second_op;
     char operation;
     cin >> first_op >> operation >> second_op;  // cin ignores spaces which allows reading int + char + int inputs
-    switch(operation){
-        case '+': // Addition
 
-            cout << vector_list[first_op - 1] << " + " << vector_list[second_op - 1];
-            cout << " = " << vector_list[first_op - 1] + vector_list[second_op - 1] << endl;
-            break;
-        case '.': // Dot Product
-            cout << vector_list[first_op - 1] << " . " << vector_list[second_op - 1];
-            cout << " = " << vector_list[first_op - 1] * vector_list[second_op - 1] << endl;
-            break;
-        case '*': // Scalar Multiplication
-            cout << vector_list[first_op - 1] << " * " << second_op;
-            cout << " = " << vector_list[first_op - 1] * second_op << endl;
-            break;
-        default: // Invalid operation
-            cout << "Invalid operation!";
+    if (first_op > int(vector_list.size()) || second_op > int(vector_list.size()))
+        cout << "Those vectors do not exist!" << endl;
+    else{
+        switch(operation){
+            case '+': // Addition
+
+                cout << vector_list[first_op - 1] << " + " << vector_list[second_op - 1];
+                cout << " = " << vector_list[first_op - 1] + vector_list[second_op - 1] << endl;
+                break;
+            case '.': // Dot Product
+                cout << vector_list[first_op - 1] << " . " << vector_list[second_op - 1];
+                cout << " = " << vector_list[first_op - 1] * vector_list[second_op - 1] << endl;
+                break;
+            case '*': // Scalar Multiplication
+                cout << vector_list[first_op - 1] << " * " << second_op;
+                cout << " = " << vector_list[first_op - 1] * second_op << endl;
+                break;
+            default: // Invalid operation
+                cout << "Invalid operation!";
+        }
     }
 }
 

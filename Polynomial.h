@@ -91,7 +91,7 @@ Polynomial Polynomial::operator+(const Polynomial &in_poly) const {
             result.push_back(coefficients[i] + in_poly.coefficients[i]);
 
         for (int i = in_poly.degree + 1; i <= degree; i++)
-            result.push_back(in_poly.coefficients[i]);
+            result.push_back(coefficients[i]);
     }
     return Polynomial(result);
 }

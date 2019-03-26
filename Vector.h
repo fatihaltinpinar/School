@@ -122,7 +122,7 @@ int Vector::operator*(const Vector &in_vector) const {
             result += values[i] * in_vector.values[i]; // This is done wia summing multiplications of corresponding elements.
         return result;
     }else{
-    cout << "Vectors are not the same size. Summation cannot be done." << endl;
+    cout << "Vectors are not the same size. Dot product cannot be done." << endl;
     cout << "Returning a zero" << endl;
     return 0;
     }
