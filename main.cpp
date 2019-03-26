@@ -145,7 +145,7 @@ void print_help(){
 // Prints all the vectors from vector_list onto screen
 void print_vectors(const vector<Vector> &vector_list){
     cout << endl << "Vectors:" << endl;
-    for(int i = 0; i < vector_list.size(); i++){
+    for(unsigned int i = 0; i < vector_list.size(); i++){
         cout << i+1 << ". " << vector_list[i] << endl;
     }
 }
@@ -153,7 +153,7 @@ void print_vectors(const vector<Vector> &vector_list){
 // Prints all the polynomials from polynomial_list onto screen
 void print_polynomials(const vector<Polynomial> &polynomial_list){
     cout << endl << "Polynomials:" << endl;
-    for (int i = 0; i < polynomial_list.size(); i++){
+    for (unsigned int i = 0; i < polynomial_list.size(); i++){
         cout << i+1 << ". " << polynomial_list[i] << endl;
     }
 }
