@@ -8,7 +8,7 @@
 using namespace std;
 
 // TODO remove start
-const int MAX_OPERATOR_SIZE = 30;
+const int MAX_OPERATOR_SIZE = 100;
 
 // TODO remove end
 
@@ -123,12 +123,12 @@ public:
     void print_operators();
 
     // Helper functions
-    bool is_conflict (int x, int y, int size, char sign);
+    bool is_conflict (int x, int y, int size, char sign, bool border_error);
     bool is_bordererror (int x, int y, int size, char sign);
-    void fillgrid(int x, int y, int size, char sign);
+    void fill_grid(int x, int y, int size, char sign, bool fill_sign);
 };
 
-/*                          OperatorGrid Class Definitions                    */
+/*                           OperatorGrid Class Definitions                                  */
 
 // Constructor
 OperatorGrid::OperatorGrid(int rows, int cols) : grid_rows(rows), grid_cols(cols) {
@@ -143,7 +143,123 @@ OperatorGrid::OperatorGrid(int rows, int cols) : grid_rows(rows), grid_cols(cols
     }
 }
 
-// Helper Functions
+
+bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
+
+    int center_x = new_operator->get_x();
+    int center_y = new_operator->get_y();
+    int op_size = new_operator->get_size();
+    char sign = new_operator->get_sign();
+
+    // Checking if there is a border error or not.
+    bool border_error = is_bordererror(center_x, center_y, op_size, sign);
+
+    // Checking if there is a conflict.
+    bool conflict_error = is_conflict(center_x, center_y, op_size, sign, border_error);
+
+    if(!border_error && !conflict_error){
+
+        fill_grid(center_x, center_y, op_size, sign, true);
+
+        cout << "SUCCESS: Operator "<<  sign << " with size "<< op_size << " is placed on (" << center_x + 1 << ","
+             << center_y + 1 << ")." << endl;
+
+        operators[num_operators] = new_operator;
+        num_operators++;
+
+
+        return true;
+    }else if(border_error && !conflict_error){
+        cout << "BORDER ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+             << center_x + 1 << "," << center_y + 1 << ")." << endl;
+        return false;
+    }else if(conflict_error && !border_error){
+        cout << "CONFLICT ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+             << center_x + 1 << "," << center_y + 1 << ")." << endl;
+        return false;
+    }else{
+        cout << "BORDER ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+             << center_x + 1 << "," << center_y + 1 << ")." << endl;
+        cout << "CONFLICT ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+             << center_x + 1 << "," << center_y + 1 << ")." << endl;
+        return false;
+    }
+
+}
+
+
+
+bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
+
+
+    // Finding the moved object.
+    ArithmeticOperator *moved_operator;
+
+
+
+    // Removing the moved ArithmeticOperator from the grid in order to prevent getting a conflict with itself.
+//    fill_grid(moved_operator->get_x(), moved_operator->get_y(), moved_operator->get_size(), moved_operator->get_sign(), false);
+    cout << "Movin mein dih" << endl;
+
+}
+
+
+
+
+/*                                      Helper Functions                                */
+
+// This function checks if there are any conflict errors.
+bool OperatorGrid::is_conflict(int x, int y, int size, char sign, bool border_error){
+//  TODO BUG: If there is border error this function results a segmentation fault since it tries
+//    to control outside of the border to check its emptiness.
+    if(grid[x][y] != '\0')
+        return true;
+
+    // If there is border error, segmentation fault can happen.
+    if(border_error){
+
+    }else(!border_error){
+        if(sign == '+'){
+            // Fills a + shape on x,y coordinates that have given size, with brush.
+
+            for(int i = 1; i <= size; i++){
+                // Checking    UP                  RIGHT                       DOWN                   LEFT     for conflict.
+                if(grid[x - i][y] != '\0' || grid[x][y + i] != '\0' || grid[x + i][y] != '\0' || grid[x][y - i] != '\0')
+                    return true;
+            }
+        }else if(sign == '/'){
+
+            for(int i = 1; i <= size; i++){
+
+                // Checking    RIGHT-UP             DOWN-LEFT           for conflict.
+                if(grid[x - i][y + i] != '\0' ||  grid[x + i][y - i] != '\0')
+                    return true;
+            }
+        }else if(sign == 'x'){
+
+            for(int i = 1; i <= size; i++){
+
+                // Checking     UP-RIGHT                DOWN-RIGHT                  DOWN-LEFT
+                if(grid[x - i][y + i] != '\0' || grid[x + i][y + i] != '\0' || grid[x + i][y - i] != '\0'
+                   || grid[x - i][y - i] != '\0') // UP-LEFT for conflict.
+                    return true;
+            }
+        }else if(sign == '-'){
+
+            for(int i = 1; i <= size; i++) {
+                // Checking     RIGHT              LEFT            for conflict.
+                if (grid[x][y + i] != '\0' || grid[x][y - i] != '\0')
+                    return true;
+            }
+        }else{
+            cout << "Wrong sign input @ OperatorGrid::fill_grid!" << endl; // For debugging. if anything goes wrong.
+        }
+        return false;
+    }
+    
+}
+
+
 
 // This function checks ability of causing BORDER ERROR by the given values
 // of a temporary Arithmetic Operator.
@@ -152,28 +268,70 @@ bool OperatorGrid::is_bordererror(int x, int y, int size, char sign) {
 
         // Checks if - ArithmeticOperator is in the grid on x axis.
         if(x >= grid_rows || x < 0)
-            return false;
+            return true;
         // Checking if - operator exceeds the grid size on y axis.
         else if(y + size + 1 >= grid_cols || y - size < 0)
-            return false;
-        else
             return true;
+        else
+            return false;
 
     }else{
         // All operators but '-' behaves the same.
         // If their 'x/y + size + 1 >= grid_cols/rows' and 'x/y - size < 0' must be checked for all directions
 
-        if(x + size + 1 >= grid_rows || x - size < 0) // Checking if the operator causes any conflict errors on x axis.
-            return false;
-        else if(y + size + 1 >= grid_cols || y - size < 0)// Checking if the operator causes any conflict errors on y.
-            return false;
-        else
+        if(x + size >= grid_rows || x - size < 0) // Checking if the operator causes any conflict errors on x axis.
             return true;
+        else if(y + size >= grid_cols || y - size < 0)// Checking if the operator causes any conflict errors on y.
+            return true;
+        else
+            return false;
     }
-
 }
 
 
+// This function draws a ArithmeticOperator onto grid or removes it from the grid by filling
+// corresponding places with  sign or '\0' depending on fill_sign.
+void OperatorGrid::fill_grid(int x, int y, int size, char sign, bool fill_sign){
+    char brush;
+    if(fill_sign)
+        brush = sign;
+    else
+        brush = '\0';
+
+    if(sign == '+'){
+        // Fills a + shape on x,y coordinates that have given size, with brush.
+        grid[x][y] = brush;
+        for(int i = 1; i <= size; i++){
+            grid[x - i][y] = brush; // Up
+            grid[x][y + i] = brush; // Right
+            grid[x + i][y] = brush; // Down
+            grid[x][y - i] = brush; // Left
+        }
+    }else if(sign == '/'){
+        grid[x][y] = brush;
+        for(int i = 1; i <= size; i++){
+            grid[x - i][y + i] = brush; // Goes right up
+            grid[x + i][y - i] = brush; // Goes down left
+        }
+    }else if(sign == 'x'){
+        grid[x][y] = brush;
+        for(int i = 1; i <= size; i++){
+            grid[x - i][y + i] = brush; // Up Right
+            grid[x + i][y + i] = brush; // Down Right
+            grid[x + i][y - i] = brush; // Down Left
+            grid[x - i][y - i] = brush; // Up Left
+        }
+    }else if(sign == '-'){
+        grid[x][y] = brush;
+        for(int i = 1; i <= size; i++){
+            grid[x][y + i] = brush; // Right
+            grid[x][y - i] = brush; // Left
+        }
+    }else{
+        cout << 'Wrong sign input @ OperatorGrid::fill_grid!' << endl; // For debugging. if anything goes wrong.
+    }
+
+}
 
 
 
@@ -188,10 +346,74 @@ OperatorGrid::~OperatorGrid() {
     delete[] grid;
 
     cout << "DESTRUCTOR: GIVE BACK[" << num_operators << "] Operators." << endl;
-    delete[] operators;
+   // delete[] operators;
 }
 
-int main(){
-    cout << "hi" << endl;
+
+int main() {
+    OperatorGrid a(10,7);
+    ArithmeticOperator *x = new ArithmeticOperator(2,2,1,'x');
+    ArithmeticOperator *y = new ArithmeticOperator(2,4,1,'+');
+    ArithmeticOperator *z = new ArithmeticOperator(2,6,1,'x');
+    ArithmeticOperator *t = new ArithmeticOperator(2,1,9,'/');
+    ArithmeticOperator *w = new ArithmeticOperator(9,4,3,'-');
+    ArithmeticOperator *xx = new ArithmeticOperator(5,4,3,'/');
+    ArithmeticOperator *yy = new ArithmeticOperator(5,4,3,'-');
+    ArithmeticOperator *zz = new ArithmeticOperator(5,2,1,'-');
+    ArithmeticOperator *tt = new ArithmeticOperator(7,6,1,'/');
+    ArithmeticOperator *ww = new ArithmeticOperator(5,6,1,'+');
+    a.place_operator(x);
+    a.place_operator(y);
+    a.place_operator(z);
+    a.place_operator(t);
+    a.place_operator(w);
+    a.place_operator(xx);
+    a.place_operator(yy);
+    a.place_operator(zz);
+    a.place_operator(tt);
+    a.place_operator(ww);
+    a.move_operator(1,1,'D',2);
+    a.move_operator(5,1,'D',5);
+    a.move_operator(1,1,'D',2);
+    a.move_operator(2,4,'L',1);
+    a.move_operator(2,4,'L',2);
+    a.move_operator(8,5,'L',3);
+    a.move_operator(1,7,'D',5);
+    a.move_operator(10,1,'R',7);
+    a.move_operator(5,4,'U',3);
+    //a.print_operators();
     return 0;
+
+
+
+    /*SUCCESS: Operator x with size 1 is placed on (2,2).
+SUCCESS: Operator + with size 1 is placed on (2,4).
+SUCCESS: Operator x with size 1 is placed on (2,6).
+BORDER ERROR: Operator / with size 9 can not be placed on (2,1).
+SUCCESS: Operator - with size 3 is placed on (9,4).
+SUCCESS: Operator / with size 3 is placed on (5,4).
+CONFLICT ERROR: Operator - with size 3 can not be placed on (5,4).
+SUCCESS: Operator - with size 1 is placed on (5,2).
+SUCCESS: Operator / with size 1 is placed on (7,6).
+SUCCESS: Operator + with size 1 is placed on (5,6).
+CONFLICT ERROR: x can not be moved from (2,2) to (4,2).
+SUCCESS: - moved from (5,2) to (10,2).
+SUCCESS: x moved from (2,2) to (4,2).
+CONFLICT ERROR: + can not be moved from (2,4) to (2,3).
+SUCCESS: + moved from (2,4) to (2,2).
+SUCCESS: / moved from (7,6) to (7,3).
+SUCCESS: x moved from (2,6) to (7,6).
+BORDER ERROR: - can not be moved from (10,2) to (10,9).
+BORDER ERROR: / can not be moved from (5,4) to (2,4).
+CONFLICT ERROR: / can not be moved from (5,4) to (2,4).
+ARITHMETIC_OPERATOR[x], CENTER_LOCATION[4,2], SIZE[1]
+ARITHMETIC_OPERATOR[+], CENTER_LOCATION[2,2], SIZE[1]
+ARITHMETIC_OPERATOR[x], CENTER_LOCATION[7,6], SIZE[1]
+ARITHMETIC_OPERATOR[-], CENTER_LOCATION[9,4], SIZE[3]
+ARITHMETIC_OPERATOR[/], CENTER_LOCATION[5,4], SIZE[3]
+ARITHMETIC_OPERATOR[-], CENTER_LOCATION[10,2], SIZE[1]
+ARITHMETIC_OPERATOR[/], CENTER_LOCATION[7,3], SIZE[1]
+ARITHMETIC_OPERATOR[+], CENTER_LOCATION[5,6], SIZE[1]
+DESTRUCTOR: GIVE BACK[10,7] chars.
+DESTRUCTOR: GIVE BACK[8] Operators.*/
 }
