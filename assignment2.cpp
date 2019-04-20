@@ -196,12 +196,15 @@ bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
 
     // Finding the moved object.
     ArithmeticOperator *moved_operator;
+    for(int i = 0; i < num_operators; i++){
+
+    }
 
 
 
     // Removing the moved ArithmeticOperator from the grid in order to prevent getting a conflict with itself.
-//    fill_grid(moved_operator->get_x(), moved_operator->get_y(), moved_operator->get_size(), moved_operator->get_sign(), false);
-    cout << "Movin mein dih" << endl;
+    fill_grid(moved_operator->get_x(), moved_operator->get_y(), moved_operator->get_size(), moved_operator->get_sign(), false);
+
 
 }
 
@@ -393,7 +396,7 @@ void OperatorGrid::fill_grid(int x, int y, int size, char sign, bool fill_sign){
             grid[x][y - i] = brush; // Left
         }
     }else{
-        cout << 'Wrong sign input @ OperatorGrid::fill_grid!' << endl; // For debugging. if anything goes wrong.
+        cout << "Wrong sign input @ OperatorGrid::fill_grid!" << endl; // For debugging. if anything goes wrong.
     }
 
 }
