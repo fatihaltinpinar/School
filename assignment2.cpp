@@ -125,7 +125,9 @@ public:
     // Helper functions
     bool is_conflict (int x, int y, int size, char sign, bool border_error);
     bool is_bordererror (int x, int y, int size, char sign);
+    bool is_in_grid(int x, int y);
     void fill_grid(int x, int y, int size, char sign, bool fill_sign);
+
 };
 
 /*                           OperatorGrid Class Definitions                                  */
@@ -288,6 +290,14 @@ bool OperatorGrid::is_bordererror(int x, int y, int size, char sign) {
     }
 }
 
+
+// This function checks a point is inside the grid or outside.
+// Returns true if the point is inside the grid, otherwise returns false.
+bool OperatorGrid::is_in_grid(int x, int y) {
+    if(x >= 0 && x < grid_rows)
+        return true;
+    return (y >= 0 && y < grid_cols);
+}
 
 // This function draws a ArithmeticOperator onto grid or removes it from the grid by filling
 // corresponding places with  sign or '\0' depending on fill_sign.
