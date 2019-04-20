@@ -61,11 +61,8 @@ int Operator::get_x(){ return center_x; }
 void Operator::set_y(int new_y){ center_y = new_y - 1; }
 int Operator::get_y(){ return center_y; }
 
-void Operator::set_size(int new_size){ op_size = new_size - 1; }
+void Operator::set_size(int new_size){ op_size = new_size; }
 int Operator::get_size() { return op_size; }
-
-
-
 
 
 
@@ -99,7 +96,7 @@ char ArithmeticOperator::get_sign() { return sign; }
 // Prints the operator in following format:
 // ARITHMETIC_OPERATOR[sign], CENTER_LOCATION[center_x,center_y], SIZE[op_size]
 void ArithmeticOperator::print_operator() {
-    cout << "ARITHMETIC_OPERATOR[" << get_sign() << "], CENTER_LOCATION["<< get_x() << "," << get_y() << "], SIZE[op_size]" << endl;
+    cout << "ARITHMETIC_OPERATOR[" << get_sign() << "], CENTER_LOCATION["<< get_x() + 1 << "," << get_y() + 1 << "], SIZE[op_size]" << endl;
 }
 
 
