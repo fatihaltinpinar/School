@@ -123,7 +123,7 @@ public:
     void print_operators();
 
     // Helper functions
-    bool is_conflict (int x, int y, int size, char sign, bool border_error);
+    bool is_conflict (int x, int y, int size, char sign);
     bool is_bordererror (int x, int y, int size, char sign);
     bool is_in_grid(int x, int y);
     void fill_grid(int x, int y, int size, char sign, bool fill_sign);
@@ -157,7 +157,7 @@ bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
     bool border_error = is_bordererror(center_x, center_y, op_size, sign);
 
     // Checking if there is a conflict.
-    bool conflict_error = is_conflict(center_x, center_y, op_size, sign, border_error);
+    bool conflict_error = is_conflict(center_x, center_y, op_size, sign);
 
     if(!border_error && !conflict_error){
 
@@ -211,54 +211,111 @@ bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
 /*                                      Helper Functions                                */
 
 // This function checks if there are any conflict errors.
-bool OperatorGrid::is_conflict(int x, int y, int size, char sign, bool border_error){
-//  TODO BUG: If there is border error this function results a segmentation fault since it tries
-//    to control outside of the border to check its emptiness.
-    if(grid[x][y] != '\0')
-        return true;
+bool OperatorGrid::is_conflict(int x, int y, int size, char sign){
 
-    // If there is border error, segmentation fault can happen.
-    if(border_error){
+    // Checking center
+    if(is_in_grid(x,y))
+        if(grid[x][y] != '\0')
+            return true;
 
-    }else(!border_error){
-        if(sign == '+'){
-            // Fills a + shape on x,y coordinates that have given size, with brush.
-
-            for(int i = 1; i <= size; i++){
-                // Checking    UP                  RIGHT                       DOWN                   LEFT     for conflict.
-                if(grid[x - i][y] != '\0' || grid[x][y + i] != '\0' || grid[x + i][y] != '\0' || grid[x][y - i] != '\0')
+    // Checking other parts one by one. Checking algorithm changes depending on the sign.
+    if(sign == '+'){
+        for(int i = 1; i <= size; i++){
+            //Checking UP
+            if(is_in_grid(x-i,y))
+                if(grid[x-i][y] != '\0')
                     return true;
-            }
-        }else if(sign == '/'){
 
-            for(int i = 1; i <= size; i++){
-
-                // Checking    RIGHT-UP             DOWN-LEFT           for conflict.
-                if(grid[x - i][y + i] != '\0' ||  grid[x + i][y - i] != '\0')
+            //Checking RIGHT
+            if(is_in_grid(x,y + i))
+                if(grid[x][y + i] != '\0')
                     return true;
-            }
-        }else if(sign == 'x'){
 
-            for(int i = 1; i <= size; i++){
+            //Checking DOWN
 
-                // Checking     UP-RIGHT                DOWN-RIGHT                  DOWN-LEFT
-                if(grid[x - i][y + i] != '\0' || grid[x + i][y + i] != '\0' || grid[x + i][y - i] != '\0'
-                   || grid[x - i][y - i] != '\0') // UP-LEFT for conflict.
+            if(is_in_grid(x + i,y))
+                if(grid[x + i][y] != '\0')
                     return true;
-            }
-        }else if(sign == '-'){
 
-            for(int i = 1; i <= size; i++) {
-                // Checking     RIGHT              LEFT            for conflict.
-                if (grid[x][y + i] != '\0' || grid[x][y - i] != '\0')
+            //Checking RIGHT
+            if(is_in_grid(x,y - i))
+                if(grid[x][y - i] != '\0')
                     return true;
-            }
-        }else{
-            cout << "Wrong sign input @ OperatorGrid::fill_grid!" << endl; // For debugging. if anything goes wrong.
+
+                // Old version which results with a segmentation fault if there is a border error.
+//            // Checking    UP                  RIGHT                       DOWN                   LEFT     for conflict.
+//            if(grid[x - i][y] != '\0' || grid[x][y + i] != '\0' || grid[x + i][y] != '\0' || grid[x][y - i] != '\0')
+//                return true;
         }
-        return false;
+    }else if(sign == '/'){
+        for(int i = 1; i <= size; i++){
+            //Checking RIGHT-UP
+            if(is_in_grid(x - i,y + i))
+                if(grid[x - i][y + i] != '\0')
+                    return true;
+
+            //Checking DOWN-LEFT
+            if(is_in_grid(x + i,y - i))
+                if(grid[x + i][y - i] != '\0')
+                    return true;
+
+            // Old version which results with a segmentation fault if there is a border error.
+//            // Checking    RIGHT-UP             DOWN-LEFT           for conflict.
+//            if(grid[x - i][y + i] != '\0' ||  grid[x + i][y - i] != '\0')
+//                return true;
+        }
+    }else if(sign == 'x'){
+
+        for(int i = 1; i <= size; i++){
+            //Checking UP-RIGHT
+            if(is_in_grid(x - i,y + i))
+                if(grid[x - i][y + i] != '\0')
+                    return true;
+
+            //Checking DOWN-RIGHT
+            if(is_in_grid(x + i,y + i))
+                if(grid[x + i][y + i] != '\0')
+                    return true;
+
+            //Checking DOWN-LEFT
+            if(is_in_grid(x + i,y - i))
+                if(grid[x + i][y - i] != '\0')
+                    return true;
+
+            //Checking UP-LEFT
+            if(is_in_grid(x - i,y - i))
+                if(grid[x - i][y - i] != '\0')
+                    return true;
+
+// Old version which results with a segmentation fault if there is a border error.
+//            // Checking     UP-RIGHT                DOWN-RIGHT                  DOWN-LEFT
+//            if(grid[x - i][y + i] != '\0' || grid[x + i][y + i] != '\0' || grid[x + i][y - i] != '\0'
+//               || grid[x - i][y - i] != '\0') // UP-LEFT for conflict.
+//                return true;
+        }
+    }else if(sign == '-'){
+
+        for(int i = 1; i <= size; i++) {
+            //Checking RIGHT
+            if(is_in_grid(x,y + i))
+                if(grid[x][y + i] != '\0')
+                    return true;
+
+            //Checking LEFT
+            if(is_in_grid(x,y - i))
+                if(grid[x][y - i] != '\0')
+                    return true;
+
+// Old version which results with a segmentation fault if there is a border error.
+//            // Checking     RIGHT              LEFT            for conflict.
+//            if (grid[x][y + i] != '\0' || grid[x][y - i] != '\0')
+//                return true;
+        }
+    }else{
+        cout << "Wrong sign input @ OperatorGrid::fill_grid!" << endl; // For debugging. if anything goes wrong.
     }
-    
+    return false;
+
 }
 
 
@@ -272,7 +329,7 @@ bool OperatorGrid::is_bordererror(int x, int y, int size, char sign) {
         if(x >= grid_rows || x < 0)
             return true;
         // Checking if - operator exceeds the grid size on y axis.
-        else if(y + size + 1 >= grid_cols || y - size < 0)
+        else if(y + size  >= grid_cols || y - size < 0)
             return true;
         else
             return false;
@@ -294,9 +351,7 @@ bool OperatorGrid::is_bordererror(int x, int y, int size, char sign) {
 // This function checks a point is inside the grid or outside.
 // Returns true if the point is inside the grid, otherwise returns false.
 bool OperatorGrid::is_in_grid(int x, int y) {
-    if(x >= 0 && x < grid_rows)
-        return true;
-    return (y >= 0 && y < grid_cols);
+    return (x >= 0 && x < grid_rows && y >= 0 && y < grid_cols);
 }
 
 // This function draws a ArithmeticOperator onto grid or removes it from the grid by filling
