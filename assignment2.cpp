@@ -8,7 +8,7 @@
 using namespace std;
 
 // TODO remove start
-#define MAX_OPERATOR_SIZE 30
+const int MAX_OPERATOR_SIZE = 30;
 
 // TODO remove end
 
@@ -82,6 +82,8 @@ public:
     void print_operator();
 };
 
+
+
 /*                          ArithmeticOperator Function Definitions                     */
 
 // Constructor
@@ -96,16 +98,13 @@ char ArithmeticOperator::get_sign() { return sign; }
 // Prints the operator in following format:
 // ARITHMETIC_OPERATOR[sign], CENTER_LOCATION[center_x,center_y], SIZE[op_size]
 void ArithmeticOperator::print_operator() {
-    cout << "ARITHMETIC_OPERATOR[sign], CENTER_LOCATION[center_x,center_y], SIZE[op_size]"
+    cout << "ARITHMETIC_OPERATOR[" << get_sign() << "], CENTER_LOCATION["<< get_x() << "," << get_y() << "], SIZE[op_size]" << endl;
 }
 
 
 
 
-
-
-
-// OperatorGrid Class Declarations
+/*                          OperatorGrid Class Declarations                        */
 class OperatorGrid{
     int grid_rows;
     int grid_cols;
@@ -118,10 +117,41 @@ public:
     OperatorGrid(int rows, int cols);
     ~OperatorGrid();
 
+
     bool place_operator (ArithmeticOperator *);
     bool move_operator (int x, int y, char direction, int move_by);
     void print_operators();
 
 };
+/*                          OperatorGrid Class Definitions                    */
 
-// OperatorGrid Class Definitions
+// Constructor
+OperatorGrid::OperatorGrid(int rows, int cols) : grid_rows(rows), grid_cols(cols) {
+    num_operators = 0;
+
+    // Opening memory for grid and filling it with \0
+    grid = new char*[rows];
+    for(int i = 0; i < rows; i++){
+        // By putting parenthesis we set all elements to '\0';
+        grid[i] = new char[cols]();
+
+    }
+}
+
+// Destructor
+OperatorGrid::~OperatorGrid() {
+    // TODO add other delete
+    cout << "DESTRUCTOR: GIVE BACK[" << grid_rows << "," << grid_cols << "] chars." << endl;
+    for(int i = 0; i < grid_rows ; i++){
+        delete[] grid[i];
+    }
+    delete[] grid;
+
+    cout << "DESTRUCTOR: GIVE BACK[" << num_operators << "] Operators." << endl;
+    delete[] operators;
+}
+
+int main(){
+    cout << "hi" << endl;
+    return 0;
+}
