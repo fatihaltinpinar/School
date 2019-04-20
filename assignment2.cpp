@@ -193,18 +193,99 @@ bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
 
 bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
 
-
     // Finding the moved object.
     ArithmeticOperator *moved_operator;
-    for(int i = 0; i < num_operators; i++){
+    char sign = grid[x][y];
 
+    int center_x = 0;
+    int center_y = 0;
+    int size = 0;
+    x--;
+    y--;
+
+    for(int i = 0; i < num_operators; i++){
+        if(operators[i]->get_sign() == sign){
+            center_x = operators[i]->get_x();
+            center_y = operators[i]->get_y();
+            size = operators[i]->get_size();
+            if(sign == '+'){
+
+                // Horizontal control
+                if((x ==center_x) && (abs(y - center_y) <= size)){
+                    moved_operator = operators[i];
+                    break;
+                }
+
+                // Vertical control
+                if((y == center_y) && (abs(x - center_x))){
+                    moved_operator = operators[i];
+                    break;
+                }
+            }else if(sign == '-'){
+                if((x == center_x) && (abs(y - center_y))){
+                    moved_operator = operators[i];
+                    break;
+                }
+            }else if(sign == 'x'){
+                if((center_x - x) == (center_y - y) || (center_x - x) == -1 * (center_y - y)){
+                    if(abs(center_x - x) <= size){
+                        moved_operator = operators[i];
+                        break;
+                    }
+                }
+            }else if(sign == '/'){
+                if(((center_x - x) == -1 * (center_y - y)) && abs(center_x - x) <= size){
+                    moved_operator = operators[i];
+                    break;
+                }
+            }else{
+                cout << "You hit an empty spot!" << endl; // Debugging purposes.
+            }
+        }
+    }
+
+    int new_x = 0;
+    int new_y = 0;
+    if(direction == 'U'){
+        new_x = center_x - move_by;
+        new_y = center_y;
+    }else if(direction == 'D'){
+        new_x = center_x + move_by;
+        new_y = center_y;
+    }else if(direction == 'R'){
+        new_x = center_x;
+        new_y = center_y + move_by;
+    }else if(direction == 'L'){
+        new_x = center_x;
+        new_y = center_y - move_by;
     }
 
 
+    fill_grid(center_x, center_y, size, sign, false);
+    bool border_error = is_bordererror(new_x, new_y, size, sign);
+    bool conflict_error = is_conflict(new_x, new_y, size, sign);
 
-    // Removing the moved ArithmeticOperator from the grid in order to prevent getting a conflict with itself.
-    fill_grid(moved_operator->get_x(), moved_operator->get_y(), moved_operator->get_size(), moved_operator->get_sign(), false);
+    if(!border_error && !conflict_error){
+        cout << "SUCCESS: " << sign << " moved from (" << moved_operator->get_x() << "," << moved_operator->get_y()
+             << ") to (" << new_x << "," << new_y << ")." << endl;
 
+        moved_operator->reset(new_x, new_y, size);
+        fill_grid(new_x, new_y, size, sign, true);
+    }else if(border_error && !conflict_error){
+        cout << "BORDER ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
+             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
+        fill_grid(center_x, center_y, size, sign, true);
+    }else if(!border_error && conflict_error){
+        cout << "CONFLICT ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
+             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
+        fill_grid(center_x, center_y, size, sign, true);
+    }else if(border_error && conflict_error){
+        cout << "BORDER ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
+             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
+        cout << "CONFLICT ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
+             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
+        fill_grid(center_x, center_y, size, sign, true);
+    }
 
 }
 
@@ -400,8 +481,6 @@ void OperatorGrid::fill_grid(int x, int y, int size, char sign, bool fill_sign){
     }
 
 }
-
-
 
 
 // Destructor
