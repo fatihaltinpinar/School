@@ -96,7 +96,8 @@ char ArithmeticOperator::get_sign() { return sign; }
 // Prints the operator in following format:
 // ARITHMETIC_OPERATOR[sign], CENTER_LOCATION[center_x,center_y], SIZE[op_size]
 void ArithmeticOperator::print_operator() {
-    cout << "ARITHMETIC_OPERATOR[" << get_sign() << "], CENTER_LOCATION["<< get_x() + 1 << "," << get_y() + 1 << "], SIZE[op_size]" << endl;
+    cout << "ARITHMETIC_OPERATOR[" << get_sign() << "], CENTER_LOCATION["<< get_x() + 1 << "," << get_y() + 1
+         << "], SIZE[" << get_size() << "]" << endl;
 }
 
 
@@ -118,7 +119,7 @@ public:
     ~OperatorGrid();
 
 
-    bool place_operator (ArithmeticOperator *op);
+    bool place_operator (ArithmeticOperator *new_operator);
     bool move_operator (int x, int y, char direction, int move_by);
     void print_operators();
 
@@ -192,103 +193,126 @@ bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
 
 
 bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
-
-    // Finding the moved object.
-    ArithmeticOperator *moved_operator;
-    char sign = grid[x][y];
-
-    int center_x = 0;
-    int center_y = 0;
-    int size = 0;
     x--;
     y--;
+    if(is_in_grid(x,y)){
+        // Finding the moved object.
+        ArithmeticOperator *moved_operator;
+        bool found_operator = false;
 
-    for(int i = 0; i < num_operators; i++){
-        if(operators[i]->get_sign() == sign){
-            center_x = operators[i]->get_x();
-            center_y = operators[i]->get_y();
-            size = operators[i]->get_size();
-            if(sign == '+'){
+        char sign = grid[x][y];
 
-                // Horizontal control
-                if((x ==center_x) && (abs(y - center_y) <= size)){
-                    moved_operator = operators[i];
-                    break;
-                }
+        int center_x = 0;
+        int center_y = 0;
+        int size = 0;
 
-                // Vertical control
-                if((y == center_y) && (abs(x - center_x))){
-                    moved_operator = operators[i];
-                    break;
-                }
-            }else if(sign == '-'){
-                if((x == center_x) && (abs(y - center_y))){
-                    moved_operator = operators[i];
-                    break;
-                }
-            }else if(sign == 'x'){
-                if((center_x - x) == (center_y - y) || (center_x - x) == -1 * (center_y - y)){
-                    if(abs(center_x - x) <= size){
+
+        for(int i = 0; i < num_operators; i++){
+            if(operators[i]->get_sign() == sign){
+                center_x = operators[i]->get_x();
+                center_y = operators[i]->get_y();
+                size = operators[i]->get_size();
+                if(sign == '+'){
+
+                    // Horizontal control
+                    if((x ==center_x) && (abs(y - center_y) <= size)){
                         moved_operator = operators[i];
+                        found_operator = true;
                         break;
                     }
+
+                    // Vertical control
+                    if((y == center_y) && (abs(x - center_x))){
+                        moved_operator = operators[i];
+                        found_operator = true;
+                        break;
+                    }
+                }else if(sign == '-'){
+                    if((x == center_x) && (abs(y - center_y))){
+                        moved_operator = operators[i];
+                        found_operator = true;
+                        break;
+                    }
+                }else if(sign == 'x'){
+                    if((center_x - x) == (center_y - y) || (center_x - x) == -1 * (center_y - y)){
+                        if(abs(center_x - x) <= size){
+                            moved_operator = operators[i];
+                            found_operator = true;
+                            break;
+                        }
+                    }
+                }else if(sign == '/'){
+                    if(((center_x - x) == -1 * (center_y - y)) && abs(center_x - x) <= size){
+                        moved_operator = operators[i];
+                        found_operator = true;
+                        break;
+                    }
+                }else{
+                    cout << "You hit an empty spot!" << endl; // Debugging purposes.
                 }
-            }else if(sign == '/'){
-                if(((center_x - x) == -1 * (center_y - y)) && abs(center_x - x) <= size){
-                    moved_operator = operators[i];
-                    break;
-                }
-            }else{
-                cout << "You hit an empty spot!" << endl; // Debugging purposes.
+            }
+        }
+
+        int new_x = 0;
+        int new_y = 0;
+        if(direction == 'U'){
+            new_x = center_x - move_by;
+            new_y = center_y;
+        }else if(direction == 'D'){
+            new_x = center_x + move_by;
+            new_y = center_y;
+        }else if(direction == 'R'){
+            new_x = center_x;
+            new_y = center_y + move_by;
+        }else if(direction == 'L'){
+            new_x = center_x;
+            new_y = center_y - move_by;
+        }
+
+
+        if(found_operator){
+            fill_grid(center_x, center_y, size, sign, false);
+            bool test = grid[0][0] == '\0';
+            bool border_error = is_bordererror(new_x, new_y, size, sign);
+            bool conflict_error = is_conflict(new_x, new_y, size, sign);
+
+            if(!border_error && !conflict_error){
+                cout << "SUCCESS: " << sign << " moved from (" << moved_operator->get_x() + 1 << ","
+                     << moved_operator->get_y() + 1 << ") to (" << new_x + 1 << "," << new_y + 1 << ")." << endl;
+
+                moved_operator->set_x(new_x + 1);
+                moved_operator->set_y(new_y + 1);
+
+                fill_grid(new_x, new_y, size, sign, true);
+                return true;
+            }else if(border_error && !conflict_error){
+                cout << "BORDER ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() + 1 << ","
+                     << moved_operator->get_y() + 1 << ") to (" << new_x + 1 << "," << new_y + 1 << ")." << endl;
+                fill_grid(center_x, center_y, size, sign, true);
+                return false;
+            }else if(!border_error && conflict_error){
+                cout << "CONFLICT ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() + 1 << ","
+                     << moved_operator->get_y() + 1 << ") to (" << new_x + 1 << "," << new_y + 1 << ")." << endl;
+                fill_grid(center_x, center_y, size, sign, true);
+                return false;
+            }else if(border_error && conflict_error){
+                cout << "BORDER ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() + 1 << ","
+                     << moved_operator->get_y() + 1 << ") to (" << new_x + 1 << "," << new_y + 1 << ")." << endl;
+                cout << "CONFLICT ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() + 1 << ","
+                     << moved_operator->get_y() + 1 << ") to (" << new_x + 1 << "," << new_y + 1 << ")." << endl;
+                fill_grid(center_x, center_y, size, sign, true);
+                return false;
             }
         }
     }
 
-    int new_x = 0;
-    int new_y = 0;
-    if(direction == 'U'){
-        new_x = center_x - move_by;
-        new_y = center_y;
-    }else if(direction == 'D'){
-        new_x = center_x + move_by;
-        new_y = center_y;
-    }else if(direction == 'R'){
-        new_x = center_x;
-        new_y = center_y + move_by;
-    }else if(direction == 'L'){
-        new_x = center_x;
-        new_y = center_y - move_by;
-    }
-
-
-    fill_grid(center_x, center_y, size, sign, false);
-    bool border_error = is_bordererror(new_x, new_y, size, sign);
-    bool conflict_error = is_conflict(new_x, new_y, size, sign);
-
-    if(!border_error && !conflict_error){
-        cout << "SUCCESS: " << sign << " moved from (" << moved_operator->get_x() << "," << moved_operator->get_y()
-             << ") to (" << new_x << "," << new_y << ")." << endl;
-
-        moved_operator->reset(new_x, new_y, size);
-        fill_grid(new_x, new_y, size, sign, true);
-    }else if(border_error && !conflict_error){
-        cout << "BORDER ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
-             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
-        fill_grid(center_x, center_y, size, sign, true);
-    }else if(!border_error && conflict_error){
-        cout << "CONFLICT ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
-             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
-        fill_grid(center_x, center_y, size, sign, true);
-    }else if(border_error && conflict_error){
-        cout << "BORDER ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
-             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
-        cout << "CONFLICT ERROR: " << sign << " can not be moved from (" << moved_operator->get_x() << ","
-             << moved_operator->get_y() << ") to (" << new_x << "," << new_y << ")." << endl;
-        fill_grid(center_x, center_y, size, sign, true);
-    }
-
 }
 
+
+void OperatorGrid::print_operators() {
+    for(int i = 0; i < num_operators; i++)
+        operators[i]->print_operator();
+}
 
 
 
@@ -445,7 +469,7 @@ void OperatorGrid::fill_grid(int x, int y, int size, char sign, bool fill_sign){
     if(fill_sign)
         brush = sign;
     else
-        brush = '\0';
+        brush = 0;
 
     if(sign == '+'){
         // Fills a + shape on x,y coordinates that have given size, with brush.
@@ -528,12 +552,11 @@ int main() {
     a.move_operator(1,7,'D',5);
     a.move_operator(10,1,'R',7);
     a.move_operator(5,4,'U',3);
-    //a.print_operators();
+    a.print_operators();
     return 0;
 
-
-
-    /*SUCCESS: Operator x with size 1 is placed on (2,2).
+/*
+SUCCESS: Operator x with size 1 is placed on (2,2).
 SUCCESS: Operator + with size 1 is placed on (2,4).
 SUCCESS: Operator x with size 1 is placed on (2,6).
 BORDER ERROR: Operator / with size 9 can not be placed on (2,1).
