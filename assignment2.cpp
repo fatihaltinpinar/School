@@ -4,11 +4,15 @@
 //              on 20.04.2019.
 //
 
+#include <iostream>
+using namespace std;
+
 // TODO remove start
 #define MAX_OPERATOR_SIZE 30
 
 // TODO remove end
-using namespace std;
+
+
 
 /*                                  Operator Class Declarations             */
 class Operator {
@@ -78,9 +82,22 @@ public:
     void print_operator();
 };
 
-//ArithmeticOperator Function Definitions
+/*                          ArithmeticOperator Function Definitions                     */
+
+// Constructor
+ArithmeticOperator::ArithmeticOperator(int x, int y, int size, char sign):Operator(x,y,size){
+    this->sign = sign;
+}
+
+// Getters
+char ArithmeticOperator::get_sign() { return sign; }
 
 
+// Prints the operator in following format:
+// ARITHMETIC_OPERATOR[sign], CENTER_LOCATION[center_x,center_y], SIZE[op_size]
+void ArithmeticOperator::print_operator() {
+    cout << "ARITHMETIC_OPERATOR[sign], CENTER_LOCATION[center_x,center_y], SIZE[op_size]"
+}
 
 
 
