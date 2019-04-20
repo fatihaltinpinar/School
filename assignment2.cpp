@@ -42,27 +42,28 @@ public:
 
 // Constructor
 Operator::Operator(int x, int y, int size) {
-    center_x = x;
-    center_y = y;
+    center_x = x - 1;
+    center_y = y - 1;
     op_size = size;
 }
 
 // Reset Function which does not resets anything. It just re-sets. Nice naming btw.
 void Operator::reset (int new_x, int new_y, int new_size){
-    center_x = new_x;
-    center_y = new_y;
+    center_x = new_x - 1;
+    center_y = new_y- 1;
     op_size = new_size;
 }
 
 // Setters and Getters
-void Operator::set_x(int new_x){ center_x = new_x; }
+void Operator::set_x(int new_x){ center_x = new_x - 1; }
 int Operator::get_x(){ return center_x; }
 
-void Operator::set_y(int new_y){ center_y = new_y; }
+void Operator::set_y(int new_y){ center_y = new_y - 1; }
 int Operator::get_y(){ return center_y; }
 
-void Operator::set_size(int new_size){ op_size = new_size; }
+void Operator::set_size(int new_size){ op_size = new_size - 1; }
 int Operator::get_size() { return op_size; }
+
 
 
 
@@ -104,6 +105,8 @@ void ArithmeticOperator::print_operator() {
 
 
 
+
+
 /*                          OperatorGrid Class Declarations                        */
 class OperatorGrid{
     int grid_rows;
@@ -118,11 +121,16 @@ public:
     ~OperatorGrid();
 
 
-    bool place_operator (ArithmeticOperator *);
+    bool place_operator (ArithmeticOperator *op);
     bool move_operator (int x, int y, char direction, int move_by);
     void print_operators();
 
+    // Helper functions
+    bool is_conflict (int x, int y, int size, char sign);
+    bool is_bordererror (int x, int y, int size, char sign);
+    void fillgrid(int x, int y, int size, char sign);
 };
+
 /*                          OperatorGrid Class Definitions                    */
 
 // Constructor
@@ -137,6 +145,41 @@ OperatorGrid::OperatorGrid(int rows, int cols) : grid_rows(rows), grid_cols(cols
 
     }
 }
+
+// Helper Functions
+
+// This function checks ability of causing BORDER ERROR by the given values
+// of a temporary Arithmetic Operator.
+bool OperatorGrid::is_bordererror(int x, int y, int size, char sign) {
+    if (sign == '-'){
+
+        // Checks if - ArithmeticOperator is in the grid on x axis.
+        if(x >= grid_rows || x < 0)
+            return false;
+        // Checking if - operator exceeds the grid size on y axis.
+        else if(y + size + 1 >= grid_cols || y - size < 0)
+            return false;
+        else
+            return true;
+
+    }else{
+        // All operators but '-' behaves the same.
+        // If their 'x/y + size + 1 >= grid_cols/rows' and 'x/y - size < 0' must be checked for all directions
+
+        if(x + size + 1 >= grid_rows || x - size < 0) // Checking if the operator causes any conflict errors on x axis.
+            return false;
+        else if(y + size + 1 >= grid_cols || y - size < 0)// Checking if the operator causes any conflict errors on y.
+            return false;
+        else
+            return true;
+    }
+
+}
+
+
+
+
+
 
 // Destructor
 OperatorGrid::~OperatorGrid() {
