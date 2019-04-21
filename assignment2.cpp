@@ -145,45 +145,52 @@ OperatorGrid::OperatorGrid(int rows, int cols) : grid_rows(rows), grid_cols(cols
 
 bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
 
-    int center_x = new_operator->get_x();
-    int center_y = new_operator->get_y();
-    int op_size = new_operator->get_size();
-    char sign = new_operator->get_sign();
+    if (new_operator->get_sign() == '+'
+        || new_operator->get_sign() == '/'
+        || new_operator->get_sign() == 'x'
+        || new_operator->get_sign() == '-' ){
 
-    // Checking if there is a border error or not.
-    bool border_error = is_bordererror(center_x, center_y, op_size, sign);
+        int center_x = new_operator->get_x();
+        int center_y = new_operator->get_y();
+        int op_size = new_operator->get_size();
+        char sign = new_operator->get_sign();
 
-    // Checking if there is a conflict.
-    bool conflict_error = is_conflict(center_x, center_y, op_size, sign);
+        // Checking if there is a border error or not.
+        bool border_error = is_bordererror(center_x, center_y, op_size, sign);
 
-    if(!border_error && !conflict_error){
+        // Checking if there is a conflict.
+        bool conflict_error = is_conflict(center_x, center_y, op_size, sign);
 
-        fill_grid(center_x, center_y, op_size, sign, true);
+        if(!border_error && !conflict_error){
 
-        cout << "SUCCESS: Operator "<<  sign << " with size "<< op_size << " is placed on (" << center_x + 1 << ","
-             << center_y + 1 << ")." << endl;
+            fill_grid(center_x, center_y, op_size, sign, true);
 
-        operators[num_operators] = new_operator;
-        num_operators++;
+            cout << "SUCCESS: Operator "<<  sign << " with size "<< op_size << " is placed on (" << center_x + 1 << ","
+                 << center_y + 1 << ")." << endl;
+
+            operators[num_operators] = new_operator;
+            num_operators++;
 
 
-        return true;
-    }else if(border_error && !conflict_error){
-        cout << "BORDER ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
-             << center_x + 1 << "," << center_y + 1 << ")." << endl;
-        return false;
-    }else if(conflict_error && !border_error){
-        cout << "CONFLICT ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
-             << center_x + 1 << "," << center_y + 1 << ")." << endl;
-        return false;
-    }else{
-        cout << "BORDER ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
-             << center_x + 1 << "," << center_y + 1 << ")." << endl;
-        cout << "CONFLICT ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
-             << center_x + 1 << "," << center_y + 1 << ")." << endl;
-        return false;
+            return true;
+        }else if(border_error && !conflict_error){
+            cout << "BORDER ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+                 << center_x + 1 << "," << center_y + 1 << ")." << endl;
+            return false;
+        }else if(conflict_error && !border_error){
+            cout << "CONFLICT ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+                 << center_x + 1 << "," << center_y + 1 << ")." << endl;
+            return false;
+        }else{
+            cout << "BORDER ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+                 << center_x + 1 << "," << center_y + 1 << ")." << endl;
+            cout << "CONFLICT ERROR: Operator "<< sign << " with size " << op_size <<" can not be placed on ("
+                 << center_x + 1 << "," << center_y + 1 << ")." << endl;
+            return false;
+        }
     }
-
+    cout << "SIGN parameter is invalid!" << endl;
+return false;
 }
 
 
