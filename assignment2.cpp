@@ -218,13 +218,13 @@ bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
                     }
 
                     // Vertical control
-                    if((y == center_y) && (abs(x - center_x))){
+                    if((y == center_y) && (abs(x - center_x) <= size)){
                         moved_operator = operators[i];
                         found_operator = true;
                         break;
                     }
                 }else if(sign == '-'){
-                    if((x == center_x) && (abs(y - center_y))){
+                    if((x == center_x) && (abs(y - center_y) <= size)){
                         moved_operator = operators[i];
                         found_operator = true;
                         break;
