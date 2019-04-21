@@ -82,14 +82,12 @@ public:
 
 // Constructor
 ArithmeticOperator::ArithmeticOperator(int x, int y, int size, char sign):Operator(x,y,size){
-    if (sign == '+'
-        || sign == '/'
-        || sign == 'x'
-        || sign == '-' )
+    if (sign == '+' || sign == '/' || sign == 'x' || sign == '-' )
         this->sign = sign;
-    else
+    else{
         sign = 'q';
         cout << "SIGN parameter is invalid!" << endl;
+    }
 }
 
 // Getters
