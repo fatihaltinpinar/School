@@ -88,6 +88,7 @@ ArithmeticOperator::ArithmeticOperator(int x, int y, int size, char sign):Operat
         || sign == '-' )
         this->sign = sign;
     else
+        sign = 'q';
         cout << "SIGN parameter is invalid!" << endl;
 }
 
