@@ -5,14 +5,12 @@
 //
 
 #include <iostream>
+#ifndef MAX_OPERATOR_SIZE
+#define MAX_OPERATOR_SIZE 100
+#endif
+
+
 using namespace std;
-
-// TODO remove start
-const int MAX_OPERATOR_SIZE = 100;
-
-// TODO remove end
-
-
 
 /*                                  Operator Class Declarations             */
 class Operator {
@@ -79,8 +77,6 @@ public:
     // Prints out operator's center location, size and sign character
     void print_operator();
 };
-
-
 
 /*                          ArithmeticOperator Function Definitions                     */
 
@@ -272,7 +268,6 @@ bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
 
         if(found_operator){
             fill_grid(center_x, center_y, size, sign, false);
-            bool test = grid[0][0] == '\0';
             bool border_error = is_bordererror(new_x, new_y, size, sign);
             bool conflict_error = is_conflict(new_x, new_y, size, sign);
 
@@ -305,7 +300,7 @@ bool OperatorGrid::move_operator(int x, int y, char direction, int move_by) {
             }
         }
     }
-
+    return false;
 }
 
 
