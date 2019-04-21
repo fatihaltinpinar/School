@@ -82,7 +82,13 @@ public:
 
 // Constructor
 ArithmeticOperator::ArithmeticOperator(int x, int y, int size, char sign):Operator(x,y,size){
-    this->sign = sign;
+    if (sign == '+'
+        || sign == '/'
+        || sign == 'x'
+        || sign == '-' )
+        this->sign = sign;
+    else
+        cout << "SIGN parameter is invalid!" << endl;
 }
 
 // Getters
@@ -189,7 +195,7 @@ bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
             return false;
         }
     }
-    cout << "SIGN parameter is invalid!" << endl;
+
 return false;
 }
 
