@@ -173,7 +173,8 @@ bool OperatorGrid::place_operator(ArithmeticOperator *new_operator) {
             cout << "SUCCESS: Operator "<<  sign << " with size "<< op_size << " is placed on (" << center_x + 1 << ","
                  << center_y + 1 << ")." << endl;
 
-            operators[num_operators] = new_operator;
+            operators[num_operators] = new ArithmeticOperator(*new_operator);
+            // Copying the operator in order to prevent user interaction with operators already implemented.
             num_operators++;
 
 
@@ -524,6 +525,7 @@ OperatorGrid::~OperatorGrid() {
     delete[] grid;
 
     cout << "DESTRUCTOR: GIVE BACK[" << num_operators << "] Operators." << endl;
-   // delete[] operators;
+    for(int i = 0; i < num_operators; i++)
+        delete operators[i];
 }
 

@@ -5,6 +5,12 @@
 using namespace std;
 
 int main() {
-    cout << "hi" << endl;
+    ArithmeticOperator plus(3,3,1,'+');
+
+    OperatorGrid grid(10, 10);
+
+    grid.place_operator(&plus);
+    plus.set_y(5);
+    grid.move_operator(3,2,'L',1);
     return 0;
 }
