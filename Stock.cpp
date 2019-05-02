@@ -5,17 +5,14 @@
  * Date: 01.05.2019
  */
 
+
+#include "Stock.h"
 #include <iostream>
-#include <fstream>
-
-#include "Ingredient.cpp"
-#include "Stock.cpp"
-
+#include "Ingredient.h"
 
 using namespace std;
 
-int main(){
+Stock::Stock() {
 
-
-    return 0;
+    cout << ("ses");
 }

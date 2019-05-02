@@ -1,6 +1,10 @@
-//
-// Created by faati on 01.05.2019.
-//
+/* @Author
+ *
+ * Student Name: Fatih Altınpınar
+ * Student ID: 150180707
+ * Date: 01.05.2019
+ */
+
 #include <string>
 #include <exception>
 #ifndef INGREDIENT_H
