@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "Ingredient.cpp"
 #include "Stock.cpp"
@@ -14,8 +15,10 @@
 
 using namespace std;
 
+
+
 int main(){
-
-
+    Stock x(100);
+    x.fillStock("stock.txt");
     return 0;
 }
