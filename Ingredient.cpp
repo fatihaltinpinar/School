@@ -31,16 +31,16 @@ float Ingredient::useIngredient(int amount) {
 
 
 ostream& Type1::print(ostream &os) const {
-    os << name << '\t' << 1 << '\t' << item_count << '\t' << price_per_unit;
+    os << name << '\t' << 1 << '\t' << item_count << '\t' << price_per_unit << "\r\n";
 }
 
 
 ostream& Type2::print(ostream &os) const {
-    os << name << '\t' << 2 << '\t' << item_count << '\t' << price_per_unit;
+    os << name << '\t' << 2 << '\t' << item_count << '\t' << price_per_unit << "\r\n";
 }
 
 
 ostream& Type3::print(ostream &os) const {
-    os << name << '\t' << 3 << '\t' << item_count << '\t' << price_per_unit;
+    os << name << '\t' << 3 << '\t' << item_count << '\t' << price_per_unit << "\r\n";
 }
 

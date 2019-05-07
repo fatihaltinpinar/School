@@ -29,7 +29,7 @@ public:
     // Getters
     string getName(){return name;}
     int getType(){return type;}
-    int getItemCount(){return item_count;}
+    int getItemCount(){return item_count;}      // TODO: Make this function virtual.
     float getPricePerUnit(){return price_per_unit;}
 };
 

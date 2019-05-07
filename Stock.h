@@ -11,15 +11,23 @@
 #include <string>
 
 class Stock {
+    int capacity;
+public:
+    int getCapacity() const;
+
+private:
     int stock_size;
     Ingredient **stock_list;
-
 public:
     Stock(int stock_size);
-    void fillStock(string stock_file_name);
-    void addStock(string name, int type, int item_count, float price);
-    bool checkStock(string stock_name, int amount) const;
-    void getStock(string stock_name, int amount);
+    void fillStock(const string &stock_file_name);
+    void addStock(const string &name, int type, int item_count, float price);
+    bool checkStock(const string &ingredient_name, int amount) const;
+    void getStock(const string &ingredient_name, int amount);
+    friend ostream& operator<<(ostream &, const Stock &stock);
+    int getStockSize() const;
+    Ingredient **getStockList() const;
+    void setStockSize(int stockSize);
     ~Stock();
     
 };

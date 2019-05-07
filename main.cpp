@@ -18,7 +18,24 @@ using namespace std;
 
 
 int main(){
-    Stock x(100);
-    x.fillStock("stock.txt");
+
+
+
+
+
+
+
+
+
+
+
+//    Stock x(100);             // TODO get stock size before creating stock.
+//    x.fillStock("stock.txt");
+//    fstream stock_out("stock.txt");
+//    stock_out << "Name\tType\tItemCount\tPrice\r\n";
+//    stock_out << x;
+
+
+
     return 0;
 }
