@@ -9,9 +9,11 @@
 #include <fstream>
 #include <vector>
 
+const int MAX_INGREDIENT_COUNT = 10;
+
 #include "Ingredient.cpp"
 #include "Stock.cpp"
-
+#include "Food.cpp"
 
 using namespace std;
 

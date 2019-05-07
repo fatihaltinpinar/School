@@ -12,9 +12,6 @@
 
 class Stock {
     int capacity;
-public:
-    int getCapacity() const;
-
 private:
     int stock_size;
     Ingredient **stock_list;
@@ -23,7 +20,8 @@ public:
     void fillStock(const string &stock_file_name);
     void addStock(const string &name, int type, int item_count, float price);
     bool checkStock(const string &ingredient_name, int amount) const;
-    void getStock(const string &ingredient_name, int amount);
+    float getStock(const string &ingredient_name, int amount);
+    int getCapacity() const;
     friend ostream& operator<<(ostream &, const Stock &stock);
     int getStockSize() const;
     Ingredient **getStockList() const;

@@ -60,6 +60,24 @@ void Stock::addStock(const string &name, int type, int item_count, float price) 
     stock_size++;
 }
 
+bool Stock::checkStock(const string &ingredient_name, int amount) const {
+    int i = 0;
+    while (i < stock_size && stock_list[i]->getName() != ingredient_name) i++;
+    if (i == stock_size) throw "There is no" + ingredient_name + "in stock!";
+
+    return (stock_list[i]->getItemCount() >= amount);
+}
+
+
+float Stock::getStock(const string &ingredient_name, int amount) {
+    int i = 0;
+    while (i < stock_size && stock_list[i]->getName() != ingredient_name) i++;
+    if (i == stock_size) throw "There is no" + ingredient_name + "in stock!";
+
+    stock_list[i]->setItemCount(stock_list[i]->getItemCount() - amount);
+    return (stock_list[i]->getPricePerUnit() * amount);
+}
+
 
 ostream& operator<<(ostream &out, const Stock &stock){
     int size = stock.getStockSize();
