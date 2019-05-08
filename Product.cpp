@@ -28,18 +28,23 @@ void Product::addIngredient(const string &ingredient_info){
 
         ss.str(ingredient_info);
 
+        getline(ss, tmp, ' ');
+        separated_info.push_back(tmp);
 
-        while (ss.eof()) {
-            getline(ss, tmp, ' ');
-            separated_info.push_back(tmp);
-        }
-        if (separated_info.size() == 2)
-            ingredients[ingredient_count] = new Type2(separated_info[1], stoi(separated_info[0]), 0);
-        else if (separated_info[1] == "gram")
+        getline(ss, tmp, ' ');
+        separated_info.push_back(tmp);
+
+        getline(ss, tmp);
+        if (tmp[tmp.length() - 1] == '\r')
+            tmp.erase(tmp.length() - 1, 1);
+        separated_info.push_back(tmp);
+
+        if (separated_info[1] == "gram")
             ingredients[ingredient_count] = new Type1(separated_info[2], stoi(separated_info[0]), 0);
         else if (separated_info[1] == "ml")
             ingredients[ingredient_count] = new Type3(separated_info[2], stoi(separated_info[0]), 0);
-        else throw "This ingredient makes no sense to me!"; // Very cool error messages.
+        else
+            ingredients[ingredient_count] = new Type2(separated_info[1], stoi(separated_info[0]), 0);
     }
     ingredient_count++;
 }
@@ -57,7 +62,7 @@ bool Product::checkAvaibility(const Stock &stock) {
 float Product::serveProduct(Stock &stock) {
     float total = 0;
     for (int i = 0; i < ingredient_count; i++){
-        total = stock.getStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
+        total += stock.getStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
     }
     return total;
 }
