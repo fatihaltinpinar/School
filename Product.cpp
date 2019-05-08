@@ -25,7 +25,6 @@ void Product::addIngredient(const string &ingredient_info){
         string tmp;
         vector<string> separated_info;
 
-
         ss.str(ingredient_info);
 
         getline(ss, tmp, ' ');
@@ -49,7 +48,7 @@ void Product::addIngredient(const string &ingredient_info){
     ingredient_count++;
 }
 
-bool Product::checkAvaibility(const Stock &stock) {
+bool Product::isAvailable(const Stock &stock) {
     bool is_avaible = true;
     int i = 0;
     while (is_avaible && i < ingredient_count){

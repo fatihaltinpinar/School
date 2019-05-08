@@ -23,7 +23,7 @@ class Product {
 public:
     Product(const string& name);
     void addIngredient(const string &ingredient_info);
-    bool checkAvaibility(const Stock &stock);
+    bool isAvailable(const Stock &stock);
     float serveProduct(Stock &stock);
     ~Product();
 };
