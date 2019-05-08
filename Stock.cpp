@@ -35,6 +35,8 @@ void Stock::fillStock(const string &stock_file_name) {
     getline(stock_file, line);
     while (!stock_file.eof() && line != ""){
         getline(stock_file, line);
+        while (line[0] == '\r' || line[0] == '\n')
+            line.erase(0, 1);
         if (line != "") {
             ss.clear();
             ss.str(line);
@@ -53,12 +55,15 @@ void Stock::addStock(const string &name, int type, int item_count, float price) 
     if (stock_size > capacity) throw "Stock at max capacity!";
         if (type == 1){
         stock_list[stock_size] = new Type1(name, item_count, price);
+        stock_size++;
     }else if (type == 2){
         stock_list[stock_size] = new Type2(name, item_count, price);
+        stock_size++;
     }else if (type == 3){
         stock_list[stock_size] = new Type3(name, item_count, price);
+        stock_size++;
     }else throw "Wrong type while adding stock";
-    stock_size++;
+
 }
 
 bool Stock::checkStock(const string &ingredient_name, int amount) const {

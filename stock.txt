@@ -1,5 +1,5 @@
 Name	Type	ItemCount	Price
-chicken	1	750 0.05
+chicken	1	750	0.05
 beef	1	750	0.44
 lamb	1	1000	0.5
 salmon	1	900	0.6
@@ -12,7 +12,7 @@ garlic	2	10	0.5
 cashew	2	10	1
 carrot	2	15	0.6
 lemon	2	10	0.2
-red paper	2	5	0.3
+red pepper	2	5	0.3
 ceaser salad	2	5	15
 bbq salad	2	3	10
 green salad	2	3	12

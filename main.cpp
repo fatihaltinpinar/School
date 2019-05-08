@@ -33,11 +33,9 @@ int main(){
         cout << "test = " << menu[0]->serveProduct(x);
 
 
-    fstream stock_out("stock.txt");
-    stock_out << "Name\tType\tItemCount\tPrice\r\n";
+    fstream stock_out("stock.txt", ios::out);
+    stock_out << "Name\tType\tItemCount\tPrice\n";
     stock_out << x;
-
-
 
     for (int i = 0; i < product_count; i++)
         delete menu[i];
