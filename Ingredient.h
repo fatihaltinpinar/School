@@ -33,8 +33,6 @@ public:
     void setItemCount(int new_item_count);
     float getPricePerUnit(){return price_per_unit;}
 
-    //Destructor
-    virtual ~Ingredient() = 0;
 };
 
 void Ingredient::setItemCount(int new_item_count) {
