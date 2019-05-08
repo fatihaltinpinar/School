@@ -24,7 +24,7 @@ void Product::addIngredient(const string &ingredient_info){
         stringstream ss;
         string tmp;
         vector<string> separated_info;
-
+        ss.clear();
         ss.str(ingredient_info);
 
         getline(ss, tmp, ' ');

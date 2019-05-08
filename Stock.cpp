@@ -36,8 +36,9 @@ void Stock::fillStock(const string &stock_file_name) {
     while (!stock_file.eof() && line != ""){
         getline(stock_file, line);
         if (line != "") {
+            ss.clear();
             ss.str(line);
-            name = ss.str();
+            name = ss.str(); // TODO what is this for?
             getline(ss, name, '\t');
             ss >> type >> item_count >> price;
 
