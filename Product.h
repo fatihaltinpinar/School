@@ -17,14 +17,14 @@
 
 class Product {
     int ingredient_count;
+    float total_price;  // TODO fix or remove this
     Ingredient** ingredients;
     string name;
-    float total_price;
 public:
     Product(const string& name);
     void addIngredient(const string &ingredient_info);
-    bool checkAvaibility();
-    float serveProduct();
+    bool checkAvaibility(const Stock &stock);
+    float serveProduct(Stock &stock);
     ~Product();
 };
 
