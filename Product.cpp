@@ -5,15 +5,15 @@
  * Date: 07.05.2019
  */
 
-#include "Food.h"
+#include "Product.h"
 
-//Food::Food(string &name) {
+//Product::Product(string &name) {
 //    this->name = name;
 //    ingredient_count = 0;
 //    ingredients = new Ingredient*[MAX_INGREDIENT_COUNT];
 //}
 //
-//void Food::addIngredient(Ingredient &ingredient) {
+//void Product::addIngredient(Ingredient &ingredient) {
 //    ingredient[ingredient_count] = new Ingredient();
 //    ingredient_count++;
 //}

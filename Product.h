@@ -3,10 +3,11 @@
  * Student Name: Fatih Altınpınar
  * Student ID: 150180707
  * Date: 07.05.2019
+ *
  */
 
-#ifndef FOOD_H
-#define FOOD_H
+#ifndef PRODUCT_H
+#define PRODUCT_H
 
 #include <iostream>
 #include <string>
@@ -14,17 +15,18 @@
 #include "Stock.h"
 
 
-class Food {
+class Product {
     int ingredient_count;
     Ingredient** ingredients;
     string name;
     float total_price;
 public:
-    Food(string& name);
-    void addIngredient(Ingredient &ingredient);
-    float makeFood(int countity);
-
+    Product(const string& name);
+    void addIngredient(const string &ingredient_info);
+    bool checkAvaibility();
+    float serveProduct();
+    ~Product();
 };
 
 
-#endif //FOOD_H
+#endif //PRODUCT_H

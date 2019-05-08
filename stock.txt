@@ -1,5 +1,5 @@
 Name	Type	ItemCount	Price
-chicken	1	750	0.05
+chicken	1	750 0.05
 beef	1	750	0.44
 lamb	1	1000	0.5
 salmon	1	900	0.6

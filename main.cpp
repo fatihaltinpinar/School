@@ -13,7 +13,7 @@ const int MAX_INGREDIENT_COUNT = 10;
 
 #include "Ingredient.cpp"
 #include "Stock.cpp"
-#include "Food.cpp"
+#include "Product.cpp"
 
 using namespace std;
 
