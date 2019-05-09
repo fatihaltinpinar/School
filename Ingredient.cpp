@@ -64,15 +64,18 @@ float Ingredient::getPricePerUnit() {
 // Polymorphic functions to print stock.txt
 ostream& Type1::print(ostream &os) const {
     os << name << '\t' << 1 << '\t' << item_count << '\t' << price_per_unit << "\n";
+    return os;
 }
 
 
 ostream& Type2::print(ostream &os) const {
     os << name << '\t' << 2 << '\t' << item_count << '\t' << price_per_unit << "\n";
+    return os;
 }
 
 
 ostream& Type3::print(ostream &os) const {
     os << name << '\t' << 3 << '\t' << item_count << '\t' << price_per_unit << "\n";
+    return os;
 }
 
