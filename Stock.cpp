@@ -82,7 +82,11 @@ float Stock::getStock(const string &ingredient_name, int amount) {  // Uses and 
     while (i < stock_size && stock_list[i]->getName() != ingredient_name) i++;
     if (i == stock_size) throw "Not enough stock!";
 
-    stock_list[i]->setItemCount(stock_list[i]->getItemCount() - amount);
+    try{
+        stock_list[i]->setItemCount(stock_list[i]->getItemCount() - amount);
+    }catch (const char *error){
+        cout << error << endl;
+    }
     return (stock_list[i]->getPricePerUnit() * amount);
 }
 
