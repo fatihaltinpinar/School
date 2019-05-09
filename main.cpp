@@ -80,13 +80,15 @@ int main(){
                     if (error == "Not enough ingredients"){
                         cout << "We don't have enough " << order_name << endl;
                         isAvaliable = false;
+                    }else{
+                        cout << error << endl;
                     }
                 }
                 k++;
             }
             total_cost += product_cost;
             if(served != 0)
-                cout << served << " " << order_name << " cost: " << product_cost << "\r\n";
+                cout << served << " " << order_name << " cost: " << product_cost << endl;
 
         }
         float tip = (total_cost * tipRate) / 100;
@@ -94,8 +96,8 @@ int main(){
 
         total_cost = total_cost + tip + tax;
         cout << "Tip is " << tip << "\r\n";
-        cout << "Total cost: " << total_cost << "\r\n";
-        cout << "***************************" << "\r\n";
+        cout << "Total cost: " << total_cost << " TL"<< endl;
+        cout << "***************************" << endl;
     }
 
     fstream stock_out("stock.txt", ios::out);
@@ -155,10 +157,10 @@ float serveProduct(Product **menu, const int product_count, Stock &stock, const 
     int i = 0;
     while (i < product_count && menu[i]->getName() != product_name)
         i++;
-    
+
     if (i == product_count) throw "This product does not exist!";
     if (!menu[i]->isAvailable(stock)) throw "Not enough ingredients";
-    
+
     return menu[i]->makeFood(stock);
 }
 
