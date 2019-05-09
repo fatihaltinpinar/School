@@ -19,26 +19,27 @@ protected:
     int item_count;
     float price_per_unit;
 public:
-    Ingredient(string name,int type,int itemCount, float pricePerUnit);
-    friend ostream& operator<<(ostream &, const Ingredient &ingredient);
+    Ingredient(string name,int type,int itemCount, float pricePerUnit);     // Constructor
+
+    friend ostream& operator<<(ostream &, const Ingredient &ingredient);    // << overloading for writing file.
     virtual ostream& print(ostream &os) const = 0;          // Virtual function to print stocks into stock.txt
 
     // Function for using ingredients.
     float useIngredient(int amount);
 
     // Getters
-    string getName(){return name;}
-    int getType(){return type;}
-    int getItemCount(){return item_count;}
+    string getName();
+    int getType();
+    int getItemCount();
     void setItemCount(int new_item_count);
-    float getPricePerUnit(){return price_per_unit;}
+    float getPricePerUnit();
+    void setName(const string &name);
+    void setType(int type);
+    void setPricePerUnit(float pricePerUnit);
 
 };
 
-void Ingredient::setItemCount(int new_item_count) {
-    if (new_item_count < 0) throw "Item count can't be lower than 0!";
-    item_count = new_item_count;
-}
+
 
 class Type1: public Ingredient{
 public:

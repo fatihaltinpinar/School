@@ -25,13 +25,27 @@ ostream &operator<<(ostream &os, const Ingredient &ingredient) {
 }
 
 
-float Ingredient::useIngredient(int amount) {
-    if(amount > item_count) throw ("Not enough " + name);
-    // TODO you cannot write an exception here, find a spot that you can write exception
-    //  This homework's quality level is way low.
+
+void Ingredient::setItemCount(int new_item_count) {
+    if (new_item_count < 0) throw "Item count can't be lower than 0!";
+    item_count = new_item_count;
+}
+
+void Ingredient::setName(const string &name) {
+    this->name = name;
+}
+
+void Ingredient::setType(int type) {
+    this->type = type;
+}
+
+void Ingredient::setPricePerUnit(float pricePerUnit) {
+    price_per_unit = pricePerUnit;
 }
 
 
+// Polymorphism is used here
+// Polymorphic functions to print stock.txt
 ostream& Type1::print(ostream &os) const {
     os << name << '\t' << 1 << '\t' << item_count << '\t' << price_per_unit << "\n";
 }
