@@ -8,10 +8,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
+
 
 #include "Ingredient.h"
 #include "Stock.h"
-#include <sstream>
 
 using namespace std;
 
@@ -94,13 +95,8 @@ ostream& operator<<(ostream &out, const Stock &stock){
     return out;
 }
 
-Stock::~Stock() {
-    for(int i = 0; i < stock_size; i++){
-        delete stock_list[i];
-    }
-    delete [] stock_list;
-}
 
+/*                                          Getters and Setters                                                     */
 int Stock::getStockSize() const {
     return stock_size;
 }
@@ -115,4 +111,11 @@ Ingredient **Stock::getStockList() const {
 
 int Stock::getCapacity() const {
     return capacity;
+}
+
+Stock::~Stock() {
+    for(int i = 0; i < stock_size; i++){
+        delete stock_list[i];
+    }
+    delete [] stock_list;
 }
