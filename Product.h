@@ -18,7 +18,6 @@
 
 class Product {
     int ingredient_count;
-    float total_price;  // TODO fix or remove this
     Ingredient** ingredients;
     string name;
 public:

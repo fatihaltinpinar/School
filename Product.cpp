@@ -13,7 +13,6 @@
 Product::Product(const string &name) {
     this->name = name;
     ingredient_count = 0;
-    total_price = 0; // TODO fix or remove this
     ingredients = new Ingredient*[MAX_INGREDIENT_COUNT];
 }
 
@@ -66,7 +65,11 @@ bool Product::isAvailable(const Stock &stock) {
 float Product::makeFood(Stock &stock) {
     float total = 0;
     for (int i = 0; i < ingredient_count; i++){
-        total += stock.getStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
+        try{
+            total += stock.getStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
+        } catch (const char *error){
+            cout << error << endl;
+        }
     }
     return total;
 }
