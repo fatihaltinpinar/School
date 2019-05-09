@@ -22,9 +22,10 @@ class Product {
     string name;
 public:
     Product(const string& name);
+    string getName() const;
     void addIngredient(const string &ingredient_info);
     bool isAvailable(const Stock &stock);
-    float serveProduct(Stock &stock);
+    float makeFood(Stock &stock);
     ~Product();
 };
 

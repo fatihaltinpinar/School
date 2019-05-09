@@ -17,6 +17,11 @@ Product::Product(const string &name) {
     ingredients = new Ingredient*[MAX_INGREDIENT_COUNT];
 }
 
+
+string Product::getName() const {
+    return name;
+}
+
 void Product::addIngredient(const string &ingredient_info){
     if (ingredient_info == "N/A"){
         ingredients[ingredient_count] = new Type2(name, 1, 0);
@@ -58,7 +63,7 @@ bool Product::isAvailable(const Stock &stock) {
     return is_avaible;
 }
 
-float Product::serveProduct(Stock &stock) {
+float Product::makeFood(Stock &stock) {
     float total = 0;
     for (int i = 0; i < ingredient_count; i++){
         total += stock.getStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
