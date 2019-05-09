@@ -21,12 +21,19 @@ class Product {
     Ingredient** ingredients;
     string name;
 public:
-    Product(const string& name);
+    Product(const string& name);                                // Constructor
+
+    void addIngredient(const string &ingredient_info);          // Adds ingredient to product object.
+    bool isAvailable(const Stock &stock);                       // Checks ingredients if they are available in stock
+    float makeFood(Stock &stock);                               // Uses ingredients from the stock
+
+    // Getters and Setters
     string getName() const;
-    void addIngredient(const string &ingredient_info);
-    bool isAvailable(const Stock &stock);
-    float makeFood(Stock &stock);
-    ~Product();
+    int getIngredientCount() const;
+    void setIngredientCount(int ingredientCount);
+    void setName(const string &name);
+
+    ~Product();                                                 // Destructor
 };
 
 

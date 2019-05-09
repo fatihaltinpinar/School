@@ -10,20 +10,16 @@
 #include <sstream>
 #include "Product.h"
 
-Product::Product(const string &name) {
+Product::Product(const string &name) {                          // Constructor
     this->name = name;
     ingredient_count = 0;
     ingredients = new Ingredient*[MAX_INGREDIENT_COUNT];
 }
 
-
-string Product::getName() const {
-    return name;
-}
-
-void Product::addIngredient(const string &ingredient_info){
+void Product::addIngredient(const string &ingredient_info){     // Adds ingredient to product object.
     if (ingredient_info == "N/A"){
-        ingredients[ingredient_count] = new Type2(name, 1, 0);
+        ingredients[ingredient_count] = new Type2(name, 1, 0);  // If product is not something that is cooked,
+                                                                // it adds itself as an ingredient.
     }else{
         stringstream ss;
         string tmp;
@@ -42,7 +38,7 @@ void Product::addIngredient(const string &ingredient_info){
             tmp.erase(tmp.length() - 1, 1);
         separated_info.push_back(tmp);
 
-        if (separated_info[1] == "gram")
+        if (separated_info[1] == "gram")                    // Adding ingredients depending on the type.
             ingredients[ingredient_count] = new Type1(separated_info[2], stoi(separated_info[0]), 0);
         else if (separated_info[1] == "ml")
             ingredients[ingredient_count] = new Type3(separated_info[2], stoi(separated_info[0]), 0);
@@ -52,19 +48,19 @@ void Product::addIngredient(const string &ingredient_info){
     ingredient_count++;
 }
 
-bool Product::isAvailable(const Stock &stock) {
+bool Product::isAvailable(const Stock &stock) {             // Checks ingredients if they are available in stock
     bool is_avaible = true;
     int i = 0;
-    while (is_avaible && i < ingredient_count){
+    while (is_avaible && i < ingredient_count){ // Goes over every ingredient and checks if they is enough in the stock
         is_avaible = stock.checkStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
         i++;
     }
     return is_avaible;
 }
 
-float Product::makeFood(Stock &stock) {
+float Product::makeFood(Stock &stock) {                 // Uses ingredients from the stock
     float total = 0;
-    for (int i = 0; i < ingredient_count; i++){
+    for (int i = 0; i < ingredient_count; i++){         // Goes over every ingredient and removes them from the stack.
         try{
             total += stock.getStock(ingredients[i]->getName(), ingredients[i]->getItemCount());
         } catch (const char *error){
@@ -74,8 +70,28 @@ float Product::makeFood(Stock &stock) {
     return total;
 }
 
-Product::~Product() {
+
+/*                                  GETTERS AND SETTERS                                         */
+string Product::getName() const {
+    return name;
+}
+
+int Product::getIngredientCount() const {
+    return ingredient_count;
+}
+
+void Product::setIngredientCount(int ingredientCount) {
+    ingredient_count = ingredientCount;
+}
+
+void Product::setName(const string &name) {
+    Product::name = name;
+}
+
+
+Product::~Product() {                       // Destructor
     for (int i = 0; i < ingredient_count; i++)
         delete ingredients[i];
     delete [] ingredients;
 }
+
