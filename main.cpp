@@ -35,7 +35,7 @@ int main(){
 
     int product_count = countLine("menu.txt") - 1;          // Counting how many products there are.
     Product* menu[product_count];
-    readMenu("menu.txt", menu)                          // Filling menu array with dynamically created product objects.
+    readMenu("menu.txt", menu);                          // Filling menu array with dynamically created product objects.
 
     int stock_count = countLine("stock.txt") - 1;       // Counting how many ingredients exist in the stock.
     Stock stock(stock_count);
