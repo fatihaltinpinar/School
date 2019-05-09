@@ -85,7 +85,7 @@ void Product::setIngredientCount(int ingredientCount) {
 }
 
 void Product::setName(const string &name) {
-    Product::name = name;
+    this->name = name;
 }
 
 
