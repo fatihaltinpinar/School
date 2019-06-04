@@ -2,3 +2,7 @@
 	path = BLG242 - Logic Circuits Laboratory
 	url = https://github.com/fatihaltinpinar/logic-lab
 	branch = master
+[submodule "BLG222E - Computer Organization/Homeworks"]
+	path = BLG222E - Computer Organization/Homeworks
+	url = https://github.com/batuhanfaik/blg222e_project.git
+	branch = master
