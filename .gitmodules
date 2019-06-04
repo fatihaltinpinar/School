@@ -1,4 +1,4 @@
 [submodule "BLG242 - Logic Circuits Laboratory"]
 	path = BLG242 - Logic Circuits Laboratory
-	url = /home/faati/Desktop/logic-lab
+	url = https://github.com/fatihaltinpinar/logic-lab
 	branch = master
