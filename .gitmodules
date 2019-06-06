@@ -10,3 +10,7 @@
 	path = BLG101E - Intr. to Information Systems/Homeworks/Assignment 1
 	url = https://github.com/fatihaltinpinar/BLG101E-Assignment-1.git
 	branch = master
+[submodule "BLG101E - Intr. to Information Systems/Homeworks/Assignment 2"]
+	path = BLG101E - Intr. to Information Systems/Homeworks/Assignment 2
+	url = https://github.com/fatihaltinpinar/a2-fatihaltinpinar.git
+	branch = master
