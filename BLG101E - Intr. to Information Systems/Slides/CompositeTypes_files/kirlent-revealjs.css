@@ -1,0 +1,80 @@
+@import "bulma-0.7.1.min.css";
+
+.reveal .slides {
+    text-align: left;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+    text-transform: none;
+}
+
+.reveal h2 {
+    margin-bottom: 1em;
+}
+
+.reveal ul, .reveal ol, .reveal dl {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.reveal li {
+    line-height: 150%;
+}
+
+.reveal div {
+    vertical-align: top;
+}
+
+.reveal em {
+    font-style: normal;
+    color: red;
+}
+
+.reveal pre {
+    font-size: 0.7em;
+    width: auto;
+    margin: 0 0 1em 0;
+    padding: 1em;
+}
+
+.reveal section img {
+    border: 0;
+    box-shadow: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.serif {
+    font-family: Georgia, serif !important;
+    font-size: 100% !important;
+}
+
+.sans-serif {
+    font-family: Lucida Grande, sans-serif !important;
+    font-size: 90% !important;
+}
+
+.monospace {
+    font-family: Source Code Pro, monospace !important;
+    font-size: 80% !important;
+}
+
+.callout {
+    background-color: #ffb0b0;
+    padding: 0.4em !important;
+}
+
+.cover {
+    text-align: center;
+}
+
+.cover h2 {
+    margin-top: 2em;
+    font-size: 200%;
+}
+
+.cover .author {
+    margin-bottom: 0.5em;
+}
